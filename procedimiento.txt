@@ -1,4 +1,4 @@
-"Puedes tomar un barco y viajar tan lejos como quieras, pero tu alma nunca dejara su lugar de origen."
+"Puedes tomar un barco y viajar por el mundo, pero tu alma nunca dejara su lugar de origen."
 -Simbad, el marino-
 
 Crear una carpeta en Linux para usarla en Visual Studio Code con WSL
@@ -56,6 +56,16 @@ y de esa manera queda realizado el formulario de registro a usuarios.
 nos dirigimos a la carpeta task, de ahi a la carpeta Templates, ahi creamos el archivo home.html
 en views.py cambiamos el nombre de la funcion de helloworld por home.
 ahora se crean dos links: http://127.0.0.1:8000/signup/  y: http://127.0.0.1:8000/
-
 ejecutamos el comando: python manage.py migrate ,esto creara la datatable de usuario en SQLite(despues vemos y la seguimos usando o migramos a SQLserver o postgree)
 deberian de salir en la terminal mmuchos mensajes con un OK al final de color verde.
+
+**Terceros pasos de la pagina web**
+Entramos a la carpeta Templates y creamos un nuevo archivo llamado task.html
+nos vamos al archivo urls.py y agregamos el path para tasks.html
+ahora se crea el link: http://127.0.0.1:8000/tasks/ 
+en views.py añadimos la libreria: redirect ala primera linea,
+
+**Cuartos pasos de la pagina web**
+vamos a la carpeta Templates y creamos un nuevo archivo base.html
+el archivo base.html para el diseño va a ser muy importante, ya que este archivo va a heredar el estilo a los demas archivos.html
+dejamos los codigos html tal como estan ya que es un codigo plantilla.
