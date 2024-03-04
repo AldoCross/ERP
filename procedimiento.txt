@@ -69,3 +69,39 @@ en views.py añadimos la libreria: redirect ala primera linea,
 vamos a la carpeta Templates y creamos un nuevo archivo base.html
 el archivo base.html para el diseño va a ser muy importante, ya que este archivo va a heredar el estilo a los demas archivos.html
 dejamos los codigos html tal como estan ya que es un codigo plantilla.
+
+**Quintos pasos de la pagina web**
+creamos un nuevo archivo llamado signin.html en la carpeta de Templates.
+nos dirigmos rapidamente al archivo models.py donde realizaremos las primeras datatables.
+comando para crear las datatables: python manage.py makemigrations (asegurarse de tener el venv activado)
+despues de ejecutar el comando podemos ver el archivo de la base de datos creado en la carpeta: migrations.
+python manage.py migrate  :con ese comando ejecutamos la tabla.
+ahora, si necesitamos editar esa tabla que ya creamos tenemos esta manera: 
+python manage.py runserver   :para ver los modelos e interactuar con ellos.
+y se nos genera ahora un nuevo link: http://127.0.0.1:8000/admin/login/?next=/admin/
+procedemos ahora a crear un usuario administrador:
+ejecutamos una nueva consola en venv
+ejecutamos el comando: python manage.py createsuperuser
+ingresamos un nombre de usuario, en este caso sera: aldo
+ingresamos un correo, en este caso: aldo.cruz19@tectijuana.edu.mx
+ingresamos una contraseña, en este caso: 123
+recordar que no se ve en la terminal si tecleamos una contraseña.
+confirmamos la contraseña y ya esta.
+ejecutamos nuevamente el runserver y entramos al nuevo link de admin.
+nos dirigimos al archivo admin.py y cualqier modelo que agregems ahi, nos aparecera en el link del admin.
+
+**Sextos pasos de la aplicacion web**
+vamos a crear un formulario para la creacion de tareas, creamos en la carpeta Templates un archivo llamado create_task.html
+en views.py debajo de la funcion de task ahora creamos una nueva funcion: create_task
+en urls.py creamos la ruta de la funcion create_task
+y se nos genera un nuevo link para el proyecto: http://127.0.0.1:8000/tasks/create/
+ahora en la carpeta task, creamos un archivo llamado forms.py
+
+**Septimos pasos de la aplicacion web**
+ahora si banda, vamos a crear tareas o mejor dicho vamos a listar tareas por asi decirlo.
+en la carpeta Templates vamos al archivo tasks.html
+1:39:22 filtro de usuario para las tareas.
+
+**Octavos pasos de la aplicacion web**
+obtener una tarea para mostrarla en su propia interfaz
+creamos un nuevo archivo llamado: task_detail.html

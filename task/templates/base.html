@@ -13,16 +13,26 @@
          <li>
             <a href="/">home</a> <!-- Opcion del menu para redirigirnos al home de la web -->
          </li>
+         {% if user.is_authenticated %}
          <li>
             <a href="/tasks">tasks</a> <!-- Opcion del menu para redirigirnos al task de la web -->
          </li>
-         {% if user.is_authenticated %}
+
+         <li>
+            <a href="/tasks/create">Create task</a> <!-- Opcion del menu para redirigirnos al task de la web -->
+         </li>
+
          <li>
             <a href="/logout">logout</a> <!-- opcion para dirigirnos al seccion de cerrar sesion -->
          </li>
+
          {% else %}
          <li>
             <a href="/signup">signup</a> <!-- opcion para dirigirnos al seccion de crear cuenta -->
+         </li>
+
+         <li>
+            <a href="/signin">signin</a> <!-- opcion para dirigirnos al seccion de iniciar sesion -->
          </li>
          {% endif %}
         </ul>
