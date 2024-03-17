@@ -105,3 +105,7 @@ en la carpeta Templates vamos al archivo tasks.html
 **Octavos pasos de la aplicacion web**
 obtener una tarea para mostrarla en su propia interfaz
 creamos un nuevo archivo llamado: task_detail.html
+
+**Novenos pasos**
+ahora vamos a ver como proteger las rutas, para que usuarios que no tengan permiso, no pueden acceder a rutas a las cuales
+no deberian de entrar.
