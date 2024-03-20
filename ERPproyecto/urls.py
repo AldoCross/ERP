@@ -19,6 +19,7 @@ from django.urls import path
 from task import views #importamos el archivo views de la carpeta task
 
 urlpatterns = [
+    #URLS basicos:
     path('admin/', admin.site.urls),
     path('',views.home, name='home'),
     path('signup/', views.signup, name='signup'),
@@ -30,4 +31,9 @@ urlpatterns = [
     path('tasks/<int:task_id>/delete', views.delete_task, name='delete_task'),
     path('logout/', views.signout, name='logout'),
     path('signin/', views.signin, name='signin'),
+    
+    #URLS de los modulos:
+    path('finance/', views.finance, name='finance'),
+    path('accounting/', views.accounting, name='accounting'),
+    path('production/', views.production, name='production'),
 ]

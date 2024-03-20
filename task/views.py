@@ -9,7 +9,7 @@ from .models import Task
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+# AQUI SE CREAN LOS VIEWS BASICOS DE LA PAGINA WEB:
 def home(request):
     return render(request, 'home.html')
 
@@ -115,3 +115,16 @@ def signin(request):
         else:
             login(request,user)
             return redirect('tasks')
+        
+#APARTIR DE AQUI SE CREAN LOS MODULOS ESPECIFICOS DE LA PAGINA WEB:
+@login_required 
+def finance(request):
+    return render(request, 'finance.html', {'title': 'Finanzas'})
+
+@login_required 
+def accounting(request):
+    return render(request, 'accounting.html', {'title': 'Contabilidad'})
+
+@login_required 
+def production(request):
+    return render(request, 'production.html', {'title': 'Producción'})

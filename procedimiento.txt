@@ -4,7 +4,7 @@
 Crear una carpeta en Linux para usarla en Visual Studio Code con WSL
 1. Abre la terminal de Linux (WSL).
 2. Navega a la ubicación donde deseas crear la carpeta.
-crear la carpeta dentro del ambiente Ubunto que se instalo con el wsl: Linux/Ubuntu/home/NombreUsuario/AquiCrearCarpetadelProyecto
+crear la carpeta dentro del ambiente Ubuntu que se instalo con el wsl: Linux/Ubuntu/home/NombreUsuario/AquiCrearCarpetadelProyecto
 Puedes usar el comando cd para navegar a la ubicación deseada. Por ejemplo, si deseas crear la carpeta en tu directorio de inicio, puedes usar el siguiente comando:
 cd ~
 3. Crea la carpeta usando el comando mkdir.
@@ -109,3 +109,48 @@ creamos un nuevo archivo llamado: task_detail.html
 **Novenos pasos**
 ahora vamos a ver como proteger las rutas, para que usuarios que no tengan permiso, no pueden acceder a rutas a las cuales
 no deberian de entrar.
+
+**!NOTA IMPPORTANTE!**
+hasta aqui se finaliza la parte basica del proyecto que es:
+Requerimientos.
+Project Setup.
+creacion del entorno Django.
+la creacion de cuentas.
+inicio de sesion.
+cerrar sesion.
+generacion de tareas.
+generacion de los links y urls.
+implementacion de tokens de seguridad.
+creacion de la base de datos.
+validacion de datos.
+generacion del diseño del FrontEnd basico y funcional.
+Manejo de Errores.
+Templates y condicionales.
+Task Model.
+Proteger rutas.
+Bootstrap5.
+ahora comenzaremos con los 16 modulos que pide el profe.
+
+"En tu lucha contra el resto del mundo, te aconsejo que te pongas del lado del resto del mundo."
+-Franz Kafka-
+
+*primeros pasos de los modulos*
+vista Finanzas
+creamos un nuevo archivo llamado finanzas.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url de finanzas.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista Contabilidad
+creamos un nuevo archivo llamado Contabilidad.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+Vista Produccion
+creamos un nuevo archivo llamado Produccion.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista ventas
