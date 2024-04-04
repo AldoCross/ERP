@@ -4,10 +4,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.db import IntegrityError
-from .forms import TaskForm
-from .models import Task
+
+from .forms import TaskForm, ProductoForm, ClientesCRMfrom
+from .models import Task, Producto, Cliente
+
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # AQUI SE CREAN LOS VIEWS BASICOS DE LA PAGINA WEB:
 def home(request):
@@ -119,12 +122,93 @@ def signin(request):
 #APARTIR DE AQUI SE CREAN LOS MODULOS ESPECIFICOS DE LA PAGINA WEB:
 @login_required 
 def finance(request):
-    return render(request, 'finance.html', {'title': 'Finanzas'})
+    return render(request, 'finance.html')
 
 @login_required 
 def accounting(request):
-    return render(request, 'accounting.html', {'title': 'Contabilidad'})
+    return render(request, 'accounting.html')
 
 @login_required 
 def production(request):
-    return render(request, 'production.html', {'title': 'Producción'})
+    return render(request, 'production.html')
+
+@login_required 
+def sales(request):
+    return render(request, 'sales.html')
+
+@login_required 
+def HR(request):
+    return render(request, 'HR.html')
+
+@login_required 
+def purchasing(request):
+    return render(request, 'purchasing.html')
+
+@login_required 
+def maintenance(request):
+    return render(request, 'maintenance.html')
+
+#@login_required 
+#def CRM(request):
+#    return render(request, 'CRM.html')
+@login_required
+def CRM(request):
+    if request.method == 'POST':
+        form = ClientesCRMfrom(request.POST)
+        if form.is_valid():
+            # Save the new client to the database
+            form.save()
+            messages.success(request, '¡Cliente guardado exitosamente!')
+            # Redirect back to the CRM page after successful saving
+            return redirect('/CRM/')
+        else:
+            messages.error(request, '¡Hubo un error al guardar el cliente!')
+    else:
+        # Initialize an empty form for adding new clients
+        form = ClientesCRMfrom()
+
+    # Get all existing clients to display in the list
+    clientes = Cliente.objects.all()
+
+    # Render the CRM template with the form and list of clients
+    return render(request, 'CRM.html', {
+        'form': form,
+        'clientes': clientes
+    })
+
+@login_required
+def BI(request):
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            productos = Producto.objects.all()
+    else:
+        form = ProductoForm()
+        productos = Producto.objects.all()  # Obtener todos los productos incluso para solicitudes GET
+
+    return render(request, 'BI.html', {
+        'form': form,
+        'productos': productos,  # Agregar productos al contexto
+    })
+
+def quality(request):
+    return render(request, 'quality.html')
+
+def Ecommerce(request):
+    return render(request, 'Ecommerce.html')
+
+def payroll(request):
+    return render(request, 'payroll.html')
+
+def POS(request):
+    return render(request, 'POS.html')
+
+def Projects(request):
+    return render(request, 'Projects.html')
+
+def marketing(request):
+    return render(request, 'marketing.html')
+
+
+

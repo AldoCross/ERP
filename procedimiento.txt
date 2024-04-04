@@ -154,3 +154,51 @@ depsues en el archivo urls.py agregamos la url.
 nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
 
 vista ventas
+creamos un nuevo archivo llamado ventas.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista RH
+creamos un nuevo archivo llamado RH.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista compras
+creamos un nuevo archivo llamado compras.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista mantenimiento
+creamos un nuevo archivo llamado mantenimiento.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista Business Intelligence (BI):
+creamos un nuevo archivo llamado BI.html
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista quality
+creamos un nuevo archivo llamado calidad.html pero en ingles.
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista E-commerce
+creamos un nuevo archivo llamado E-commerce.html
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista Point of Sale (POS):
+creamos un nuevo archivo llamado POS.html
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+
