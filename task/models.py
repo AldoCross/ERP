@@ -43,5 +43,13 @@ class Cliente(models.Model):
     def _str_(self):
       return self.title + ' - by: ' + self.user.username
     
-    
-
+# base de datos para el modulo de Produccion
+class Produccion(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50)
+    modelo = models.CharField(max_length=50)
+    serie = models.CharField(max_length=50)
+    NumeroOrden = models.CharField(max_length=50)
+    cantidad = models.CharField(max_length=50)
+    def _str_(self):
+      return self.title + ' - by: ' + self.user.username

@@ -1,11 +1,22 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h1>Sales</h1>
+ {% block content %}
+ <h1>Sales</h1>
 
-<pre>
-    Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit.
-</pre>
-    
+ <div id="sales-chart-container"></div>
+
+ <script>
+    // Obtener el HTML del gráfico desde el servidor
+    const graphDiv = document.getElementById('sales-chart-container');
+    graphDiv.innerHTML = '{{ graph_div }}';
+
+    // Inicializar Dash para que se ejecute el gráfico
+    Dash.external_script({
+      url: '{{ static_url("dash.js") }}',
+      namespace: 'dash-app',
+      initArgs: () => {
+        Dash('dash-app', graphDiv).start_server();
+      }
+    });
+  </script>
 {% endblock %}

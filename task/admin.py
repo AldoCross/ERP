@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Producto, Cliente
+from .models import Task, Producto, Cliente, Produccion
 #aqui en este codigo, se agregan las tablas de las bases de datos
 #que creamos en models.py para que el admin tenga acceso a ellas.
 
@@ -11,3 +11,4 @@ class TaskAdmin(admin.ModelAdmin):
 admin.site.register(Task, TaskAdmin)
 admin.site.register(Producto)
 admin.site.register(Cliente)
+admin.site.register(Produccion)

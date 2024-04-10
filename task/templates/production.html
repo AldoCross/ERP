@@ -1,6 +1,90 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h1>Production</h1>
+
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong class="text-dark">{{ message }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h2>Production Management</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="/production/" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="id" name="id" class="form-control" placeholder="ID"
+                               maxlength="1" minlength="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Name"
+                               maxlength="50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="modelo" name="modelo" class="form-control" placeholder="Model"
+                               maxlength="50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="serie" name="serie" class="form-control" placeholder="Serial Number"
+                               maxlength="50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="NumeroOrden" name="NumeroOrden" class="form-control" placeholder="Order Number"
+                               maxlength="50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Quantity Produced"
+                               maxlength="50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block text-white">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <h1>List of Production Orders</h1>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Model</th>
+                        <th>Serial Number</th>
+                        <th>Order Number</th>
+                        <th>Quantity Produced</th>
+                        <th colspan="2">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produccion in produccion %}
+                        <tr>
+                            <td>{{ produccion.id }}</td>
+                            <td>{{ produccion.nombre }}</td>
+                            <td>{{ produccion.modelo }}</td>
+                            <td>{{ produccion.serie }}</td>
+                            <td>{{ produccion.NumeroOrden }}</td>
+                            <td>{{ produccion.cantidad }}</td>
+                            <td><a href="edicionProduccion/{{ produccion.id }}" class="btn btn-info">Edit</a></td>
+                            <td><a href="eliminarProduccion/{{ produccion.id }}" class="btn btn-danger btnEliminacion">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

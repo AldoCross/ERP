@@ -5,12 +5,18 @@ from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.db import IntegrityError
 
-from .forms import TaskForm, ProductoForm, ClientesCRMfrom
-from .models import Task, Producto, Cliente
+from .forms import TaskForm, ProductoForm, ClientesCRMfrom, ProduccionForm
+from .models import Task, Producto, Cliente, Produccion
 
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly.graph_objs as go
+import pandas as pd
 
 # AQUI SE CREAN LOS VIEWS BASICOS DE LA PAGINA WEB:
 def home(request):
@@ -128,13 +134,61 @@ def finance(request):
 def accounting(request):
     return render(request, 'accounting.html')
 
-@login_required 
+@login_required
 def production(request):
-    return render(request, 'production.html')
+    if request.method == 'POST':
+        form = ProduccionForm(request.POST)
+        if form.is_valid():
+            produccion = form.save()  # Omite el argumento 'id'
+            # Actualizar el objeto con datos de la base de datos
+            produccion.refresh_from_db()
+            return redirect('production')
+    else:  # Solicitud GET
+        form = ProduccionForm()  # Instanciar el formulario
+        produccion = Produccion.objects.all()  # Obtener todas las órdenes de producción
+    return render(request, 'production.html', {'form': form, 'produccion': produccion})
+
+@login_required
+def eliminarProduccion(request, produccion):
+    Produccion = Produccion.objects.get(produccion=produccion)
+    produccion.delete()
+    return render (request,'production.html')
+    
 
 @login_required 
 def sales(request):
     return render(request, 'sales.html')
+
+# views.py
+def sales_chart(request):
+    # Leer el archivo CSV y procesar los datos (igual que en la vista `sales`)
+    df = pd.read_csv('data.csv', delimiter = ';')
+    pv = pd.pivot_table(df, index=['Name'], columns=["Status"], values=['Quantity'], aggfunc=sum, fill_value=0)
+    # Crear las trazas para el gráfico
+    trace1 = go.Bar(x=pv.index, y=pv[('Quantity', 'declinada')], name='Declinada')
+    trace2 = go.Bar(x=pv.index, y=pv[('Quantity', 'pendiente')], name='Pendiente')
+    trace3 = go.Bar(x=pv.index, y=pv[('Quantity', 'presentada')], name='Presentada')
+    trace4 = go.Bar(x=pv.index, y=pv[('Quantity', 'ganada')], name='Ganada')
+    # Crear el layout del gráfico
+    layout = go.Layout(title='Estado de orden por cliente', barmode='stack')
+    # Crear la figura del gráfico
+    figure = {
+        'data': [trace1, trace2, trace3, trace4],
+        'layout': layout
+    }
+    # Renderizar el gráfico con Dash
+    app = dash.Dash(__name__)
+    app.layout = html.Div(children=[
+        dcc.Graph(id='sales-chart', figure=figure)
+    ])
+    # Obtener el HTML del gráfico
+    graph_div = app.to_html(include_plotlyjs=False)
+    # Renderizar el template 'sales.html' y pasar el HTML del gráfico
+    context = {
+        'graph_div': graph_div
+    }
+    return render(request, 'sales.html', context)
+
 
 @login_required 
 def HR(request):
@@ -209,6 +263,3 @@ def Projects(request):
 
 def marketing(request):
     return render(request, 'marketing.html')
-
-
-
