@@ -17,7 +17,7 @@ class ClientesCRMfrom(ModelForm):
         model = Cliente
         fields = ['id','nombre','apellido1','apellido2','numero','correo','ventas_realizadas','cliente_importante']
         
-class ProduccionForm(ModelForm):
+class ProduccionForm(forms.ModelForm):
     class Meta:
         model = Produccion
-        fields = ['id','nombre','modelo','serie','NumeroOrden','cantidad']
+        fields = ['nombre', 'modelo', 'serie', 'NumeroOrden', 'cantidad']

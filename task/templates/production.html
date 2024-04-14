@@ -14,35 +14,26 @@
         <h2>Production Management</h2>
         <div class="card">
             <div class="card-body">
-                <form action="/production/" method="POST">{% csrf_token %}
-                    <div class="form-group">
-                        <input type="text" id="id" name="id" class="form-control" placeholder="ID"
-                               maxlength="1" minlength="1" required>
+                <form action="/production/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Name" maxlength="50" required>
                     </div>
 
-                    <div class="form-group">
-                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Name"
-                               maxlength="50" required>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="modelo" name="modelo" class="form-control" placeholder="Model" maxlength="50" required>
                     </div>
 
-                    <div class="form-group">
-                        <input type="text" id="modelo" name="modelo" class="form-control" placeholder="Model"
-                               maxlength="50" required>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="serie" name="serie" class="form-control" placeholder="Serial Number" maxlength="50" required>
                     </div>
 
-                    <div class="form-group">
-                        <input type="text" id="serie" name="serie" class="form-control" placeholder="Serial Number"
-                               maxlength="50" required>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="NumeroOrden" name="NumeroOrden" class="form-control" placeholder="Order Number" maxlength="50" required>
                     </div>
 
-                    <div class="form-group">
-                        <input type="text" id="NumeroOrden" name="NumeroOrden" class="form-control" placeholder="Order Number"
-                               maxlength="50" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Quantity Produced"
-                               maxlength="50" required>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Quantity Produced" maxlength="50" required>
                     </div>
 
                     <div class="form-group">
@@ -65,7 +56,6 @@
                         <th>Serial Number</th>
                         <th>Order Number</th>
                         <th>Quantity Produced</th>
-                        <th colspan="2">Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,8 +67,6 @@
                             <td>{{ produccion.serie }}</td>
                             <td>{{ produccion.NumeroOrden }}</td>
                             <td>{{ produccion.cantidad }}</td>
-                            <td><a href="edicionProduccion/{{ produccion.id }}" class="btn btn-info">Edit</a></td>
-                            <td><a href="eliminarProduccion/{{ produccion.id }}" class="btn btn-danger btnEliminacion">Delete</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -86,5 +74,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

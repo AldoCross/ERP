@@ -12,11 +12,12 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import plotly.graph_objs as go
-import pandas as pd
+# librerias para el modulo de sales
+from django.http import HttpResponse
+from io import BytesIO
+import xlrd
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 # AQUI SE CREAN LOS VIEWS BASICOS DE LA PAGINA WEB:
 def home(request):
@@ -148,46 +149,67 @@ def production(request):
         produccion = Produccion.objects.all()  # Obtener todas las órdenes de producción
     return render(request, 'production.html', {'form': form, 'produccion': produccion})
 
-@login_required
-def eliminarProduccion(request, produccion):
-    Produccion = Produccion.objects.get(produccion=produccion)
-    produccion.delete()
-    return render (request,'production.html')
-    
-
-@login_required 
-def sales(request):
-    return render(request, 'sales.html')
-
-# views.py
+#@login_required 
+#def sales(request):
+#    return render(request, 'sales.html')
 def sales_chart(request):
-    # Leer el archivo CSV y procesar los datos (igual que en la vista `sales`)
-    df = pd.read_csv('data.csv', delimiter = ';')
-    pv = pd.pivot_table(df, index=['Name'], columns=["Status"], values=['Quantity'], aggfunc=sum, fill_value=0)
-    # Crear las trazas para el gráfico
-    trace1 = go.Bar(x=pv.index, y=pv[('Quantity', 'declinada')], name='Declinada')
-    trace2 = go.Bar(x=pv.index, y=pv[('Quantity', 'pendiente')], name='Pendiente')
-    trace3 = go.Bar(x=pv.index, y=pv[('Quantity', 'presentada')], name='Presentada')
-    trace4 = go.Bar(x=pv.index, y=pv[('Quantity', 'ganada')], name='Ganada')
-    # Crear el layout del gráfico
-    layout = go.Layout(title='Estado de orden por cliente', barmode='stack')
-    # Crear la figura del gráfico
-    figure = {
-        'data': [trace1, trace2, trace3, trace4],
-        'layout': layout
-    }
-    # Renderizar el gráfico con Dash
-    app = dash.Dash(__name__)
-    app.layout = html.Div(children=[
-        dcc.Graph(id='sales-chart', figure=figure)
-    ])
-    # Obtener el HTML del gráfico
-    graph_div = app.to_html(include_plotlyjs=False)
-    # Renderizar el template 'sales.html' y pasar el HTML del gráfico
-    context = {
-        'graph_div': graph_div
-    }
-    return render(request, 'sales.html', context)
+    if request.method == 'POST':
+        archivo_subido = request.FILES['file']
+        nombre_archivo = archivo_subido.name
+
+        # Leer el archivo Excel
+        wb = xlrd.open_workbook(nombre_archivo)
+        sheet = wb.sheet_by_index(0)
+
+        # Extraer datos de la tabla
+        sales_data = []
+        for rownum in range(1, sheet.nrows):  # Omitir la fila de encabezados (índice 0)
+            row = sheet.row_values(rownum)
+            sales_data.append({
+                'product': row[0],
+                'quantity': int(row[1]),
+                'price': float(row[2]),
+                'total': float(row[1]) * float(row[2])
+            })
+
+        # Preparar datos para la tabla y el gráfico
+        table_data = sales_data
+        chart_data = {
+            'labels': [data['product'] for data in sales_data],
+            'datasets': [{
+                'label': 'Sales',
+                'data': [data['total'] for data in sales_data],
+                'backgroundColor': 'rgba(255, 99, 132, 0.2)',
+                'borderColor': 'rgba(255, 99, 132, 1)',
+                'borderWidth': 1
+            }]
+        }
+
+        # Generar HTML para la tabla y el gráfico
+        template = get_template('sales_table.html')
+        table_html = template.render({'sales_data': table_data})
+
+        template = get_template('sales_chart.html')
+        chart_html = template.render({'chart_data': chart_data})
+
+        # Generar PDF (opcional)
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="sales_report.pdf"'
+
+        buffer = BytesIO()
+        pisaStatus = pisaStatus.CreatePDF(
+            template.render({'table_html': table_html, 'chart_html': chart_html}),
+            dest=buffer)
+        if pisaStatus.err:
+            return HttpResponse('Error generating PDF: ' + pisaStatus.err)
+        buffer.seek(0)
+        response.write(buffer.read())
+        buffer.close()
+        return response
+    else:
+        return render(request, 'sales.html')
+
+
 
 
 @login_required 
@@ -202,9 +224,6 @@ def purchasing(request):
 def maintenance(request):
     return render(request, 'maintenance.html')
 
-#@login_required 
-#def CRM(request):
-#    return render(request, 'CRM.html')
 @login_required
 def CRM(request):
     if request.method == 'POST':

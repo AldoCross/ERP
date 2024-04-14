@@ -43,7 +43,7 @@ class Cliente(models.Model):
     def _str_(self):
       return self.title + ' - by: ' + self.user.username
     
-# base de datos para el modulo de Produccion
+#base de datos para el modulo de Produccion
 class Produccion(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)

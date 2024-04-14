@@ -1,22 +1,45 @@
 {% extends 'base.html' %}
-
- {% block content %}
+{% block content %}
  <h1>Sales</h1>
 
+ <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="file">Select Excel file:</label>
+    <input type="file" id="file" name="file" accept=".xlsx">
+    <button type="submit">Upload</button>
+ </form>
+
+ <div id="sales-table-container"></div>
  <div id="sales-chart-container"></div>
 
- <script>
-    // Obtener el HTML del gráfico desde el servidor
-    const graphDiv = document.getElementById('sales-chart-container');
-    graphDiv.innerHTML = '{{ graph_div }}';
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Sales Data</title>
+ </head>
+ <body>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in sales_data %}
+                <tr>
+                    <td>{{ data.product }}</td>
+                    <td>{{ data.quantity }}</td>
+                    <td>{{ data.price }}</td>
+                    <td>{{ data.total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+ </body>
+ </html>
 
-    // Inicializar Dash para que se ejecute el gráfico
-    Dash.external_script({
-      url: '{{ static_url("dash.js") }}',
-      namespace: 'dash-app',
-      initArgs: () => {
-        Dash('dash-app', graphDiv).start_server();
-      }
-    });
-  </script>
 {% endblock %}
