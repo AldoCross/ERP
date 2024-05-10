@@ -1,45 +1,77 @@
 {% extends 'base.html' %}
 {% block content %}
- <h1>Sales</h1>
 
- <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label for="file">Select Excel file:</label>
-    <input type="file" id="file" name="file" accept=".xlsx">
-    <button type="submit">Upload</button>
- </form>
-
- <div id="sales-table-container"></div>
- <div id="sales-chart-container"></div>
-
- <!DOCTYPE html>
- <html lang="en">
- <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>Sales Data</title>
- </head>
- <body>
-    <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in sales_data %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <h1>Sales</h1>
+
+    <div class="upload-container">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file" accept=".xlsx">
+            <button type="submit">Cargar Excel</button>
+        </form>
+    </div>
+
+    <div id="sales-table-container">
+        <table id="sales-table" class="display">
+            <thead>
                 <tr>
-                    <td>{{ data.product }}</td>
-                    <td>{{ data.quantity }}</td>
-                    <td>{{ data.price }}</td>
-                    <td>{{ data.total }}</td>
+                    <th>Cuenta</th>
+                    <th>Nombre</th>
+                    <th>Rep</th>
+                    <th>Gerente</th>
+                    <th>Productos</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Estatus</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
- </body>
- </html>
+            </thead>
+            <tbody>
+                {% for row in table_data %}
+                <tr>
+                    <td>{{ row.account }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.rep }}</td>
+                    <td>{{ row.manager }}</td>
+                    <td>{{ row.product }}</td>
+                    <td>{{ row.quantity }}</td>
+                    <td>{{ row.price }}</td>
+                    <td>{{ row.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="sales-chart-container"></div>
+
+    <script>
+        // Convertir chart_data a objeto JavaScript usando JSON.parse()
+        var chart_data = JSON.parse('{{ chart_data|escapejs }}');
+
+        // Inicializar DataTable
+        $(document).ready(function() {
+            $('#sales-table').DataTable();
+        });
+
+        // Generar gráfico de barras usando Plotly
+        Plotly.newPlot('sales-chart-container', chart_data, {
+            responsive: true, // Ajustar el gráfico al tamaño de la pantalla
+            showLegend: false // Ocultar leyenda (opcional)
+        });
+    </script>
+</body>
+</html>
 
 {% endblock %}

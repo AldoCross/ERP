@@ -1,11 +1,85 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Purchasing</h1>
 
-<pre>
-    Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit.
-</pre>
-    
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong class="text-dark">{{ message }}</strong>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <h2>Purchase Management</h2>
+    <div class="card">
+      <div class="card-body">
+        <form action="/purchasing/" method="POST">
+          {% csrf_token %}
+          <div class="form-group" style="margin-bottom: 15px;">
+            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Name" maxlength="50" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 15px;">
+            <input type="text" id="modelo" name="modelo" class="form-control" placeholder="Model" maxlength="50" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 15px;">
+            <input type="text" id="serie" name="serie" class="form-control" placeholder="Serial Number" maxlength="50" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 15px;">
+            <input type="text" id="NumeroOrden" name="NumeroOrden" class="form-control" placeholder="Order Number" maxlength="50" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 15px;">
+            <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Quantity Purchased" min="1" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label for="FechaCompra">Purchase Date</label>
+            <input type="date" id="FechaCompra" name="FechaCompra" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block text-white">Save Purchase</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+    <h1>List of Purchases</h1>
+    <div class="table-responsive py-2">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Model</th>
+            <th>Serial Number</th>
+            <th>Order Number</th>
+            <th>Quantity Purchased</th>
+            <th>Purchase Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for compra in compras %}
+          <tr>
+            <td>{{ compra.id }}</td>
+            <td>{{ compra.nombre }}</td>
+            <td>{{ compra.modelo }}</td>
+            <td>{{ compra.serie }}</td>
+            <td>{{ compra.NumeroOrden }}</td>
+            <td>{{ compra.cantidad }}</td>
+            <td>{{ compra.FechaCompra }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 {% endblock %}

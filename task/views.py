@@ -5,19 +5,14 @@ from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.db import IntegrityError
 
-from .forms import TaskForm, ProductoForm, ClientesCRMfrom, ProduccionForm
-from .models import Task, Producto, Cliente, Produccion
+from .forms import TaskForm, ProductoForm, ClientesCRMfrom, ProduccionForm, VentasForm, ComprasForm, HRForm
+from .models import Task, Producto, Cliente, Produccion, Ventas, Compras, H_R
 
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # librerias para el modulo de sales
-from django.http import HttpResponse
-from io import BytesIO
-import xlrd
-from django.template.loader import get_template
-from xhtml2pdf import pisa
 
 # AQUI SE CREAN LOS VIEWS BASICOS DE LA PAGINA WEB:
 def home(request):
@@ -149,80 +144,88 @@ def production(request):
         produccion = Produccion.objects.all()  # Obtener todas las órdenes de producción
     return render(request, 'production.html', {'form': form, 'produccion': produccion})
 
-#@login_required 
-#def sales(request):
-#    return render(request, 'sales.html')
-def sales_chart(request):
+from django.shortcuts import render
+from django.contrib import messages
+import plotly
+import plotly.graph_objs as go
+import json
+from django.db import models
+from django.contrib import messages
+from .forms import VentasForm
+from .models import Ventas
+import pandas as pd
+@login_required
+def sales(request):
     if request.method == 'POST':
-        archivo_subido = request.FILES['file']
-        nombre_archivo = archivo_subido.name
+        if 'file' in request.FILES:  # Verificar si se cargó un archivo
+            file = request.FILES['file']
+            if file.name.endswith('.xlsx'):
+                try:
+                    df = pd.read_excel(file)
+                    table_data = df.to_dict('records')
 
-        # Leer el archivo Excel
-        wb = xlrd.open_workbook(nombre_archivo)
-        sheet = wb.sheet_by_index(0)
+                    # Procesar datos para el gráfico a partir de los datos cargados (modificar según sus necesidades)
+                    product_counts = df['Productos'].value_counts()
+                    bar_chart = go.Bar(x=product_counts.index, y=product_counts.values)
+                    chart_data = json.dumps([bar_chart], cls=plotly.utils.PlotlyJSONEncoder)
 
-        # Extraer datos de la tabla
-        sales_data = []
-        for rownum in range(1, sheet.nrows):  # Omitir la fila de encabezados (índice 0)
-            row = sheet.row_values(rownum)
-            sales_data.append({
-                'product': row[0],
-                'quantity': int(row[1]),
-                'price': float(row[2]),
-                'total': float(row[1]) * float(row[2])
-            })
+                    return render(request, 'sales.html', {'table_data': table_data, 'chart_data': chart_data})
+                except Exception as e:
+                    messages.error(request, f"Error al procesar el archivo Excel: {str(e)}")
+            else:
+                messages.error(request.message, "El archivo debe tener formato .xlsx")
+        else:
+            form = VentasForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Venta guardada exitosamente!')
+            else:
+                messages.error(request.message, 'Error al guardar la venta')
 
-        # Preparar datos para la tabla y el gráfico
-        table_data = sales_data
-        chart_data = {
-            'labels': [data['product'] for data in sales_data],
-            'datasets': [{
-                'label': 'Sales',
-                'data': [data['total'] for data in sales_data],
-                'backgroundColor': 'rgba(255, 99, 132, 0.2)',
-                'borderColor': 'rgba(255, 99, 132, 1)',
-                'borderWidth': 1
-            }]
-        }
+    # Recuperar datos de la base de datos (sin cambios)
+    ventas = Ventas.objects.all()
+    table_data = ventas.values('account', 'name', 'rep', 'manager', 'product', 'quantity', 'price', 'status')
+    product_counts = ventas.values('product').annotate(count=models.Count('product'))
+    bar_chart = go.Bar(x=[p['product'] for p in product_counts], y=[p['count'] for p in product_counts])
+    chart_data = json.dumps([bar_chart], cls=plotly.utils.PlotlyJSONEncoder)
+    return render(request, 'sales.html', {'table_data': table_data, 'chart_data': chart_data})
 
-        # Generar HTML para la tabla y el gráfico
-        template = get_template('sales_table.html')
-        table_html = template.render({'sales_data': table_data})
-
-        template = get_template('sales_chart.html')
-        chart_html = template.render({'chart_data': chart_data})
-
-        # Generar PDF (opcional)
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="sales_report.pdf"'
-
-        buffer = BytesIO()
-        pisaStatus = pisaStatus.CreatePDF(
-            template.render({'table_html': table_html, 'chart_html': chart_html}),
-            dest=buffer)
-        if pisaStatus.err:
-            return HttpResponse('Error generating PDF: ' + pisaStatus.err)
-        buffer.seek(0)
-        response.write(buffer.read())
-        buffer.close()
-        return response
-    else:
-        return render(request, 'sales.html')
-
-
-
-
-@login_required 
+@login_required
 def HR(request):
     return render(request, 'HR.html')
 
-@login_required 
-def purchasing(request):
-    return render(request, 'purchasing.html')
 
-@login_required 
+@login_required
+def purchasing(request):
+    if request.method == 'POST':
+        form = ComprasForm(request.POST)
+        if form.is_valid():
+            compra = form.save()  # Omite el argumento 'id'
+            # Actualizar el objeto con datos de la base de datos
+            compra.refresh_from_db()
+            return redirect('purchasing')
+    else:  # Solicitud GET
+        form = ComprasForm()  # Instanciar el formulario
+        compras = Compras.objects.all()  # Obtener todas las órdenes de compras
+        return render(request, 'purchasing.html', {'form': form, 'compras': compras})
+
+
+#@login_required 
+#def maintenance(request):
+#    return render(request, 'maintenance.html')
+from .forms import MantenimientoForm
+from .models import Mantenimiento
 def maintenance(request):
-    return render(request, 'maintenance.html')
+  if request.method == 'POST':
+    form = MantenimientoForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return redirect('maintenance')  # Redirect to itself after saving
+  else:
+    form = MantenimientoForm()
+  mantenimientos = Mantenimiento.objects.all()  # Get all maintenance records
+  return render(request, 'maintenance.html', {'form': form, 'mantenimientos': mantenimientos})
+
 
 @login_required
 def CRM(request):
@@ -239,10 +242,8 @@ def CRM(request):
     else:
         # Initialize an empty form for adding new clients
         form = ClientesCRMfrom()
-
     # Get all existing clients to display in the list
     clientes = Cliente.objects.all()
-
     # Render the CRM template with the form and list of clients
     return render(request, 'CRM.html', {
         'form': form,

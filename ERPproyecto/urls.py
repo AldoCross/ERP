@@ -37,7 +37,8 @@ urlpatterns = [
     path('accounting/', views.accounting, name='accounting'),
     
     path('production/', views.production, name='production'),
-    path('sales/', views.sales_chart, name='sales'),
+    
+    path('sales/', views.sales, name='sales'),
     
     path('HR/', views.HR, name='HR'),
     path('purchasing/', views.purchasing, name='purchasing'),
