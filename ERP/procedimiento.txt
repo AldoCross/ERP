@@ -1,0 +1,204 @@
+"Puedes tomar un barco y viajar por el mundo, pero tu alma nunca dejara su lugar de origen."
+-Simbad, el marino-
+
+Crear una carpeta en Linux para usarla en Visual Studio Code con WSL
+1. Abre la terminal de Linux (WSL).
+2. Navega a la ubicación donde deseas crear la carpeta.
+crear la carpeta dentro del ambiente Ubuntu que se instalo con el wsl: Linux/Ubuntu/home/NombreUsuario/AquiCrearCarpetadelProyecto
+Puedes usar el comando cd para navegar a la ubicación deseada. Por ejemplo, si deseas crear la carpeta en tu directorio de inicio, puedes usar el siguiente comando:
+cd ~
+3. Crea la carpeta usando el comando mkdir.
+Por ejemplo, para crear una carpeta llamada "mi_proyecto", puedes usar el siguiente comando:
+mkdir mi_proyecto
+4. Abre Visual Studio Code.
+5. Abre la carpeta que acabas de crear en Visual Studio Code.
+Puedes hacerlo de dos maneras:
+Usando el menú "Archivo".
+Haz clic en "Archivo" > "Abrir carpeta" y selecciona la carpeta "mi_proyecto".
+Usando el comando "code".
+En la terminal de Linux, escribe el siguiente comando:
+code mi_proyecto
+6. ¡Ya está!
+Ahora puedes trabajar en tu proyecto en Visual Studio Code utilizando la terminal de Linux.
+
+**Preparacion del Proyecto**
+nos ubicamos en la carpeta del proyecto con la terminal: cd ERP3
+Creamos el entorno virtual de esta manera:
+a. instalamos el entorno virtual: python -m pip install venv
+b. Creación del entorno virtual: python -m venv venv
+c. Activación del entorno virtual: source venv/bin/activate
+Instalar Django: pip install django.
+revisar version de Django: django-admin --version en este caso:5.0.2
+
+**Creacion del ambiente de Django**
+creamos la carpeta del proyecto con: django-admin startproject ERP .  (con el punto)
+ejecutamos el archivo manage.py para comprobar el django: python manage.py runserver
+(nota saldra texto en color rojo, no es un error solo ignorarlo)
+abrimos el link, en este caso: http://127.00.1/8000/
+Deberia salir este mesaje en la pagina web: The install worked successfully! Congratulations!
+ctrl + C para salir de la generacion del link y volvemos a activar el en version: source venv/bin/activate
+
+**Creacion de la aplicacion**
+ejecutamos: python manage.py startapp task (se crea la carpeta task)
+entramos en la carpeta ERP y de ahi al archivo settings.py
+en el archivo settings.py buscamos la funcion: INSTALLED APPS, y añadimos esto: 'task'
+Nota: saldran algunas dependencias/librerias con warnings amarillos, no pasa nada, solo ignoralos.
+
+**Primeros pasos de la pagina web**
+nos dirigimos a la carpeta task, ahi dentro creamos otra carpeta llamada: Templates.
+dentro de la carpeta Templates creado un archivo llamado signup.html
+En el archivo settings.py de tu proyecto Django, asegúrate de que la siguiente línea esté presente en la sección INSTALLED_APPS: 'django.contrib.auth',
+en el archivo signup.html agregamos lo que actualmente contiene ese archivo y lo mismo para el views.py
+añadimos en el urls.py la siguiente linea: path('signup/', views.helloworld)
+y de esa manera queda realizado el formulario de registro a usuarios.
+
+**Segundos pasos de la pagina web**
+nos dirigimos a la carpeta task, de ahi a la carpeta Templates, ahi creamos el archivo home.html
+en views.py cambiamos el nombre de la funcion de helloworld por home.
+ahora se crean dos links: http://127.0.0.1:8000/signup/  y: http://127.0.0.1:8000/
+ejecutamos el comando: python manage.py migrate ,esto creara la datatable de usuario en SQLite(despues vemos y la seguimos usando o migramos a SQLserver o postgree)
+deberian de salir en la terminal mmuchos mensajes con un OK al final de color verde.
+
+**Terceros pasos de la pagina web**
+Entramos a la carpeta Templates y creamos un nuevo archivo llamado task.html
+nos vamos al archivo urls.py y agregamos el path para tasks.html
+ahora se crea el link: http://127.0.0.1:8000/tasks/ 
+en views.py añadimos la libreria: redirect ala primera linea,
+
+**Cuartos pasos de la pagina web**
+vamos a la carpeta Templates y creamos un nuevo archivo base.html
+el archivo base.html para el diseño va a ser muy importante, ya que este archivo va a heredar el estilo a los demas archivos.html
+dejamos los codigos html tal como estan ya que es un codigo plantilla.
+
+**Quintos pasos de la pagina web**
+creamos un nuevo archivo llamado signin.html en la carpeta de Templates.
+nos dirigmos rapidamente al archivo models.py donde realizaremos las primeras datatables.
+comando para crear las datatables: python manage.py makemigrations (asegurarse de tener el venv activado)
+despues de ejecutar el comando podemos ver el archivo de la base de datos creado en la carpeta: migrations.
+python manage.py migrate  :con ese comando ejecutamos la tabla.
+ahora, si necesitamos editar esa tabla que ya creamos tenemos esta manera: 
+python manage.py runserver   :para ver los modelos e interactuar con ellos.
+y se nos genera ahora un nuevo link: http://127.0.0.1:8000/admin/login/?next=/admin/
+procedemos ahora a crear un usuario administrador:
+ejecutamos una nueva consola en venv
+ejecutamos el comando: python manage.py createsuperuser
+ingresamos un nombre de usuario, en este caso sera: aldo
+ingresamos un correo, en este caso: aldo.cruz19@tectijuana.edu.mx
+ingresamos una contraseña, en este caso: 123
+recordar que no se ve en la terminal si tecleamos una contraseña.
+confirmamos la contraseña y ya esta.
+ejecutamos nuevamente el runserver y entramos al nuevo link de admin.
+nos dirigimos al archivo admin.py y cualqier modelo que agregems ahi, nos aparecera en el link del admin.
+
+**Sextos pasos de la aplicacion web**
+vamos a crear un formulario para la creacion de tareas, creamos en la carpeta Templates un archivo llamado create_task.html
+en views.py debajo de la funcion de task ahora creamos una nueva funcion: create_task
+en urls.py creamos la ruta de la funcion create_task
+y se nos genera un nuevo link para el proyecto: http://127.0.0.1:8000/tasks/create/
+ahora en la carpeta task, creamos un archivo llamado forms.py
+
+**Septimos pasos de la aplicacion web**
+ahora si banda, vamos a crear tareas o mejor dicho vamos a listar tareas por asi decirlo.
+en la carpeta Templates vamos al archivo tasks.html
+1:39:22 filtro de usuario para las tareas.
+
+**Octavos pasos de la aplicacion web**
+obtener una tarea para mostrarla en su propia interfaz
+creamos un nuevo archivo llamado: task_detail.html
+
+**Novenos pasos**
+ahora vamos a ver como proteger las rutas, para que usuarios que no tengan permiso, no pueden acceder a rutas a las cuales
+no deberian de entrar.
+
+**!NOTA IMPPORTANTE!**
+hasta aqui se finaliza la parte basica del proyecto que es:
+Requerimientos.
+Project Setup.
+creacion del entorno Django.
+la creacion de cuentas.
+inicio de sesion.
+cerrar sesion.
+generacion de tareas.
+generacion de los links y urls.
+implementacion de tokens de seguridad.
+creacion de la base de datos.
+validacion de datos.
+generacion del diseño del FrontEnd basico y funcional.
+Manejo de Errores.
+Templates y condicionales.
+Task Model.
+Proteger rutas.
+Bootstrap5.
+ahora comenzaremos con los 16 modulos que pide el profe.
+
+"En tu lucha contra el resto del mundo, te aconsejo que te pongas del lado del resto del mundo."
+-Franz Kafka-
+
+*primeros pasos de los modulos*
+vista Finanzas
+creamos un nuevo archivo llamado finanzas.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url de finanzas.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista Contabilidad
+creamos un nuevo archivo llamado Contabilidad.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+Vista Produccion
+creamos un nuevo archivo llamado Produccion.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista ventas
+creamos un nuevo archivo llamado ventas.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista RH
+creamos un nuevo archivo llamado RH.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista compras
+creamos un nuevo archivo llamado compras.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista mantenimiento
+creamos un nuevo archivo llamado mantenimiento.html pero en ingles
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista Business Intelligence (BI):
+creamos un nuevo archivo llamado BI.html
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista quality
+creamos un nuevo archivo llamado calidad.html pero en ingles.
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista E-commerce
+creamos un nuevo archivo llamado E-commerce.html
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+vista Point of Sale (POS):
+creamos un nuevo archivo llamado POS.html
+y ahora generamos la view en views.py
+depsues en el archivo urls.py agregamos la url.
+nos dirigimos a base.html y agregamos la opcion para dirigimos al modulo
+
+

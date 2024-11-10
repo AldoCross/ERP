@@ -1,0 +1,93 @@
+/* Section: Home Container */
+
+.home-container {
+    display: flex; /* Enable flexbox layout */
+    align-items: flex-start; /* Align items vertically to the top */
+    padding: 20px;
+  }
+  
+  /* Section: Home Content */
+  
+  .home-content {
+    width: 50%; /* Set width for the content area */
+    margin-right: 20px; /* Add margin between content and images */
+  }
+  
+  .home-header {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .home-description {
+    font-size: 16px;
+    line-height: 1.6; /* Adjust line spacing for better readability */
+  }
+  
+  /* Section: Home Images */
+  
+  .home-images {
+    width: 50%; /* Set width for the image area */
+    float: right; /* Move images to the right */
+  }
+  
+  .pic-x {
+    width: 30%; /* Set width for each image */
+    margin-bottom: 20px; /* Add margin between images */
+  }
+  
+  .pic-x img {
+    width: 100%; /* Make image fill the width of its container */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  /* Responsive Design (Optional) */
+  
+  @media (max-width: 768px) {
+    .home-container {
+      flex-direction: column; /* Switch to column layout for smaller screens */
+    }
+  
+    .home-content {
+      width: 100%; /* Content takes full width */
+      margin-bottom: 20px; /* Add margin below content */
+    }
+  
+    .home-images {
+      width: 100%; /* Images take full width */
+    }
+  }
+
+  /* Existing styles... */
+
+ .ad-copy {
+  text-align: left; /* Align text to the left of the images */
+  margin-top: 20px;  /* Add some space from the header */
+  width: 40%;       /* Adjust width as needed */
+ }
+ .ad-header {
+  font-size: 1.2em;  /* Slightly larger than body text */
+  font-weight: bold;
+ }
+ .ad-text {
+  line-height: 1.5; /* Improve readability */
+ }
+
+/* ...otros estilos... */
+
+.ad-copy {
+  text-align: justify; 
+  margin-top: 20px;  
+  width: 50%;   
+  line-height: 1.6; 
+}
+
+.ad-header {
+  font-size: 1.8em;  
+  font-weight: bold;
+  color: #333; 
+}
+
+.ad-text {
+  font-size: 1.2em; 
+} 

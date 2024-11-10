@@ -34,22 +34,19 @@ urlpatterns = [
     
     #URLS de los modulos:
     path('finance/', views.finance, name='finance'),
-    path('accounting/', views.accounting, name='accounting'),
-    
+    path('events/', views.events, name='events'),
     path('production/', views.production, name='production'),
-    path('sales/', views.sales_chart, name='sales'),
     
+    path('sales/', views.sales, name='sales'),
     path('HR/', views.HR, name='HR'),
     path('purchasing/', views.purchasing, name='purchasing'),
-    path('maintenance/', views.maintenance, name='maintenance'),
     
+    path('maintenance/', views.maintenance, name='maintenance'),
     path('CRM/', views.CRM, name='CRM'),
-    path('BI/', views.BI, name='BI'),
+    path('stock/', views.stock, name='stock'),
    
     path('quality/', views.quality, name='quality'),
-    path('Ecommerce/', views.Ecommerce, name='Ecommerce'),
     path('payroll/', views.payroll, name='payroll'),
-    path('POS/', views.POS, name='POS'),
     path('Projects/', views.Projects, name='Projects'),
     path('marketing/', views.marketing, name='marketing'),
 ]

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Business Inteligence</h1>
+    <form action="/BI/" method="POST">
+        {% csrf_token %}
+        {{ form }}
+    
+        <button>
+            Guardar producto
+        </button>
+    </form>
+    
+    <h2>Lista de productos</h2>
+    <ul>
+        {% for producto in productos %}
+            <li>{{ producto.nombre }}</li>  {% endfor %}
+    </ul>
+
+{% endblock %}
