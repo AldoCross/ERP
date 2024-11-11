@@ -1,1 +1,2 @@
 django==4.2.3
+pip install crispy-forms
