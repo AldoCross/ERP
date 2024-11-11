@@ -1,2 +1,2 @@
 django==4.2.3
-git+https://github.com/django-crispy-forms/django-crispy-forms.git@1.14.0#egg=crispy-forms
+crispy-forms
