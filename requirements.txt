@@ -1,2 +1,2 @@
 django
-crispy-forms
+git+https://github.com/django-crispy-forms/django-crispy-forms.git#egg=crispy-forms
